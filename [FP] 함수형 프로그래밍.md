@@ -14,7 +14,7 @@
 </br>
 
 # 테크닉
-* 커링(Currying)
+* [커링(Currying)](https://github.com/AgustaRC/Dev-Log/blob/master/%5BFP%5D%20Currying.md)
 * 클로저(Closure)
 * 펑터(Functor)
 * 합성(Function Composition)
