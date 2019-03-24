@@ -1,4 +1,4 @@
-# Github에 정리하는 이유
+# GitHub에 정리하는 이유
   * 아무리 공부를 했어도 자주 사용하지 않으면 기억이 바로 나지 않는다.
   </br>
   
@@ -26,41 +26,19 @@
   
 # 다루고자 하는 주제
   * **Android**
-  </br>
-  
   * **Java**
-  </br>
-  
   * **Kotlin**
-  </br>
-  
   * **Scala**
-  </br>
-  
   * **FP**
-  </br>
-  
   * **Git**
-  </br>
-  
   * **IntelliJ Plugin**
-  </br>
-  
   * **HTTP**
-  </br>
-  
   * **Database**
-  </br>
-  
   * **Data Structures**
-  </br>
-  
   * **Algorithms**
-  </br>
-  
   * **Libraries**
   </br>
-  </br>
+
 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="크리에이티브 커먼즈 라이선스" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
