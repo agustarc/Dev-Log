@@ -37,6 +37,7 @@
   * **인터페이스 구현 레이아웃**
     * 인터페이스를 구현할 때 멤버들의 순서는 인터페이스의 선언 순서와 동일하게 유지해라. 
     <br>
+    <br>
 
 # Naming rules
   * Kotlin은 Java의 네이밍 룰을 따른다. 
@@ -94,12 +95,76 @@
       val PersonComparator: Comparator<Person> = ...
       ```
     * ```Enum```의 경우 사용법에 따라 언더스코어로 구분된 대문자로 사용하거나 파스칼 표기법을 사용해도 괜찮다.
-  
-<br>
+    <br>
+    
+  * **backing 프로퍼티 이름**
+    * 개념적으로 같은 프로퍼티이지만 하나는 클래스 외부에 공개하고 다른 하나는 내부 구현을 담을 때 private으로 선언하고 언더스코어로 작성한 뒤 공개용 프로퍼티의 getter로 할당한다.
+      ```kotlin
+      class C {
+        private val _elementList = mutableListOf<Element>()
+
+        val elementList: List<Element>
+             get() = _elementList
+      }
+      ```
+    <br>
+
+ * **좋은 이름 선택**
+   * 클래스의 이름은 명사 또는 명사구로 작성한다. ex) ```List```, ```PersonReader```
+   * 메소드의 이름은 동사 또는 동사구로 작성한다. ex) ```close```, ```readPersons```
+   * 메소드의 이름은 오브젝트를 변경하거나 새로운 오브젝트를 리턴하는 경우 이를 암시해야 한다.
+   * 예를 들어, ```sort```는 해당 컬렉션 자체를 정렬하고 ```sorted```는 정렬된 컬렉션의 복사본을 반환하는 것이다.
+   * 이름에 의미 없는 단어(```Manager```, ```Wrapper``` 등)를 사용하는 것은 피하자.
+   * 이름에 약어를 사용하는 경우 두 개의 문자(```IOStream```)일 때는 둘 다 대문자로 표기하고 그보다 더 긴 경우(```XmlFormatter```, ```HttpInputStream```) 파스칼 표기법으로 작성하자. 
+   <br>
+   <br>
 
 # Formatting
-<br>
+ * 이미 Java에서부터 쓰고 있던 컨벤션들이 많지만 놓치고 있던 것들도 있으니 정리하자.
+ * 대부분의 경우 Java 코딩 컨벤션을 따른다.
+ * 들여 쓰기는 4자리 공백을 사용하고 탭은 사용하지 않는다.
+ * Curly braces ```{}```의 경우 구조가 시작되는 선의 끝에 opening curly brace ```{```를 위치시키고, closing curly brace ```}```는 수평으로 정렬된 별도의 라인에 놓는다. 
+   ```kotlin
+   if (elements != null) {
+      for (element in elements) {
+          // ...
+      }
+   }
+   ```
+ * Kotlin에서 세미콜론은 선택사항이기 때문에 줄 바꿈은 중요하다.
+ * Kotlin 언어의 디자인은 Java 스타일의 ```braces```를 가정한 것으로, 다른 포맷 스타일을 사용하려고 하면 예상치 못한 동작에 직면할 수 있다.
+   <br>
+ 
+ * **가로 공백**
+   * (```a + b```)처럼 이진 연산자 사이에 한 칸의 공백을 둔다.
+   * 예외적으로 range to 연산자의 경우 공백을 두지 않는다. (```0..i```)
+   * 단항 연산자 주변에는 공백을 두지 않는다. (```a++```)
+   * (```if```, ```when```, ```for```, ```while```)과 같은 흐름 제어 키워드들과 여는 소괄호 사이에는 공백을 넣는다.
+     ```kotlin
+     if (condition) {
 
+     }
+     ```
+   * 기본 생성자 선언과 메소드 선언의 여는 소괄호 앞에는 공백을 두지 않는다.
+     ```kotlin
+     class A(val x: Int)
+
+     fun foo(x: Int) { ... }
+
+     fun bar() {
+         foo(1)
+     }
+     ```
+   * ```(```, ```[```,의 뒤나 ```]```, ```)```,의 앞에 공백을 두지 않는다.
+   * ```.```이나 ```?.``` 주변에 공백을 두지 않는다. ```foo.bar().filter { it > 2 }.joinToString(), foo?.bar()```
+   * 주석 문자 뒤에는 공백을 둔다. ```// This is a comment```
+   * 타입 파라미터를 선언할 때 사용하는 angle brackets ```<>``` 주변에 공백을 두지 않는다. ```class Map<K, V> { ... }```
+   * 메소드 레퍼런스 호출 시 사용하는 ```::```사이에 공백을 두지 않는다. ```Foo::class, String::length```
+   * ```Nullable``` 타입을 선언할 때 ```?``` 앞에 공백을 두지 않는다. ```String?```
+   <br>
+   <br>
+ 
+ 
 # Documentation comments
 <br>
 
