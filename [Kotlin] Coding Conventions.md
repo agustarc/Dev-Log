@@ -284,7 +284,112 @@
       package foo.bar      
       ```
       <br>
+      
+  * **함수 형식**
+    * 함수의 시그니처를 한 줄로 표현하기 알맞지 않다면 아래와 같은 구문을 따른다.
+      ```kotlin
+      fun longMethodName(
+          argument: ArgumentType = defaultValue,
+          argument2: AnotherArgumentType
+      ): ReturnType {
+          // body
+      }    
+      ```
+    * 파라미터는 4칸 공백으로 들여 쓰기 한다. 
+    * 함수가 단일 표현식으로 구성되어있을 경우 ```{}```과 ```return```을 제거하고 ```=```로 표현하는 방식이 선호된다.
+      ```kotlin
+      fun foo(): Int {     // bad
+          return 1 
+      }
+
+      fun foo() = 1        // good    
+      ```
+    * 타입 추론에 의해 타입을 생략하는 경우도 있지만 리턴 타입의 경우 타입을 명시하는 것이 좋다고 생각한다. 리턴 값의 구조가 복잡해질수록 코드를 읽는 사람이 직접 추론해나가는 과정이 필요하다. 
+    <br>
+    
+  * **표현식 본체 형식**
+    * 만약 표현식 본체가 한 줄로 표현하기 알맞지 않다면 첫 줄에 ```=``` 와 다음 줄에 표현식 본체를 4칸 공백 들여 쓰기로 작성한다.
+      ```kotlin
+      fun f(x: String) =
+      x.length
+      ```
       <br>
+      
+  * **프로퍼티 형식**
+    * 매우 간단한 ```Read-only``` 프로퍼티의 경우 한 줄로 작성하는 것을 고려하자.
+      ```kotlin
+      val isEmpty: Boolean get() = size == 0
+      ```
+    * 좀 더 복잡한 프로퍼티의 경우 ```get``` 과 ```set``` 을 분리된 라인에 두 자.
+      ```kotlin
+      val foo: String
+          get() { ... }      
+      ```
+    * 초기화 코드가 있는 프로퍼티의 경우, 초기화 코드가 길다면 줄바꿈 처리하여 4칸 공백 들여 쓰기 한다.
+      ```kotlin
+      private val defaultCharset: Charset? =
+          EncodingRegistry.getInstance().getDefaultCharsetForPropertiesFiles(file)      
+      ```
+      <br>
+      
+  * **제어문 형식**
+    * ```if```나 ```when```과 같은 조건식이 멀티라인일 경우 항상 opening curly brace ```{```를 실행 구문에 가깝게 둔다.
+    * 각 조건식 라인은 4칸 공백으로 들여쓰기 한다.
+    * 조건식의 닫는 소괄호와 함께 여는 opening curly brace ```{```사이에 공백을 둔다.
+      ```kotlin
+      if (!component.isSyncing &&
+          !hasAnyKotlinRuntimeInScope(module)
+      ) {
+          return createKotlinNotConfiguredPanel(module)
+      }    
+      ```
+    * ```else```, ```catch```, ```finally``` 키워드뿐 아니라 ```do/while``` 루프에서의 ```while``` 키워드까지 이전 curly brace와 동일한 라인에 둔다.
+      ```kotlin
+      if (condition) {
+          // body
+      } else {
+          // else part
+      }
+
+      try {
+          // body
+      } finally {
+          // cleanup
+      }      
+      ```
+    * ```when``` 제어문에서 분기문이 한 줄 이상일 경우 인접한 case 블록과 빈 라인으로 구분하는 것을 고려하라. 
+      ```kotlin
+      private fun parsePropertyValue(propName: String, token: Token) {
+          when (token) {
+              is Token.ValueToken ->
+                  callback.visitValue(propName, token.value)
+
+              Token.LBRACE -> { // ...
+              }
+          }
+      }    
+      ```
+    * 짧은 분기문의 경우 braces 없이 조건과 동일한 라인에 둔다.
+      ```kotlin
+      when (foo) {
+          true -> bar() // good
+          false -> { baz() } // bad
+      }      
+      ```
+      <br>
+  * **메소드 호출 형식**
+    * 긴 인자 목록을 가지는 메소드를 호출할 때, 여는 소괄호 다음 줄바꿈을 한 뒤 인자들을 4칸 공백으로 들여 쓰기 한다.
+    * 밀접하게 관련된 인자끼리 그룹핑한다.
+      ```kotlin
+      drawSquare(
+          x = 10, y = 10,
+          width = 100, height = 100,
+          fill = true
+      )    
+      ```
+    * 인자의 이름과 값을 구분하는 ```=``` 주변에 공백을 둔다. 
+    <br>
+
 
 # Documentation comments
 <br>
