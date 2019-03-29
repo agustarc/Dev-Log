@@ -162,9 +162,130 @@
    * 메소드 레퍼런스 호출 시 사용하는 ```::```사이에 공백을 두지 않는다. ```Foo::class, String::length```
    * ```Nullable``` 타입을 선언할 때 ```?``` 앞에 공백을 두지 않는다. ```String?```
    <br>
-   <br>
- 
- 
+
+ * **콜론**
+   * 아래 경우에 콜론 ```:``` 앞에 공백을 넣어라.
+     * 타입과 슈퍼 타입을 분리할 때 
+     * 동일한 클래스의 다른 생성자 또는 슈퍼 클래스의 생성자에게 위임할 때 
+     * ```object``` 키워드 다음에
+     <br>
+   * 변수 선언과 그 타입을 분리할 때 콜론 ```:``` 앞에 공백을 두지 않는다. 
+   * 콜론 ```:``` 뒤에는 항상 공백을 넣는다.
+     ```kotlin
+     abstract class Foo<out T : Any> : IFoo {
+         abstract fun foo(a: Int): T
+     }
+
+     class FooImpl : Foo() {
+         constructor(x: String) : this(x) { ... }
+
+         val x = object : IFoo { ... } 
+     }   
+     ```
+     <br>
+     
+ * **클래스 헤더 형식**
+   * 파라미터가 몇 개 없는 기본 생성자의 경우 한 줄로 작성할 수 있다.
+     ```kotlin
+     class Person(id: Int, name: String)
+     ```
+   * 헤더가 긴 기본 생성자의 경우 들여 쓰기와 함께 라인으로 구분한다. 또한 닫는 소괄호 ```)```는 새로운 라인에 있어야 하고, 만약 상속을 사용하는 경우 슈퍼 클래스의 생성자 호출 및 인터페이스 구현은 닫는 소괄호 ```)```와 동일한 라인에 있어야 한다.
+     ```kotlin
+     class Person(
+         id: Int,
+         name: String,
+         surname: String
+     ) : Human(id, name) { ... }     
+     ```
+   * 다중 인터페이스를 구현하는 경우 슈퍼 클래스의 생성자를 먼저 닫는 소괄호 )에 같은 라인으로 위치시키고 각 인터페이스는 각각 다른 라인으로 위치해야 한다.  
+     ```kotlin
+     class Person(
+         id: Int,
+         name: String,
+         surname: String
+     ) : Human(id, name),
+         KotlinMaker { ... }     
+     ```
+   * 긴 슈퍼 타입 목록을 가지는 클래스의 경우 콜론 : 다음에 각 타입별로 줄 바꿈 처리하고 가로 정렬을 맞춘다.
+     ```kotlin
+     class MyFavouriteVeryLongClassHolder :
+         MyLongHolder<MyFavouriteVeryLongClass>(),
+         SomeOtherInterface,
+         AndAnotherOne {
+
+         fun foo() { ... }
+     }   
+     ```
+   * 클래스 헤더가 길 경우 클래스 헤더와 몸체를 명확히 구분하려면 위의 예와 같이 클래스 헤더 다음에 빈 라인을 두거나 아래와 같이 opening curly brace ```{```를 별도의 라인으로 둔다.
+     ```kotlin
+     class MyFavouriteVeryLongClassHolder :
+         MyLongHolder<MyFavouriteVeryLongClass>(),
+         SomeOtherInterface,
+         AndAnotherOne 
+     {
+         fun foo() { ... }
+     }     
+     ```
+     <br>
+
+  * **제어자**
+    * 여러 개의 제어자를 가질 경우 아래의 순서를 따른다.
+      ```kotlin
+      public / protected / private / internal
+      expect / actual
+      final / open / abstract / sealed / const
+      external
+      override
+      lateinit
+      tailrec
+      vararg
+      suspend
+      inner
+      enum / annotation
+      companion
+      inline
+      infix
+      operator
+      data      
+      ```
+      <br>
+      
+    * 모든 어노테이션은 제어자 앞에 둔다.
+      ```kotlin
+      @Named("Foo")
+      private val foo: Foo      
+      ```
+      <br>
+             
+  * **어노테이션 형식**
+    * 어노테이션은 일반적으로 어노테이션이 부착되는 곳 이전 위치에 동일한 들여 쓰기로 라인을 구분하여 둔다.
+      ```kotlin
+      @Target(AnnotationTarget.PROPERTY)
+      annotation class JsonExclude
+      ```
+    * 인자 없는 어노테이션의 경우 같은 라인에 위치할 수 있다.
+      ```kotlin
+      @JsonExclude @JvmField
+      var x: String      
+      ```
+    * 인자 없는 한 개의 어노테이션만 선언할 경우 해당 어노테이션과 상응하는 선언과 동일한 라인에 위치할 수 있다.
+      ```kotlin
+      @Test fun foo() { ... }
+      ```
+      <br>
+      
+  * **파일 어노테이션**
+    * 파일 어노테이션은 파일의 주석과, 패키지 선언 사이에 둔다.
+    * 패키지가 아니라 파일을 대상으로 한다는 것을 강조하기 위해 패키지 선언과 공백 라인으로 분리한다.
+      ```kotlin
+      /** License, copyright and whatever */
+      @file:JvmName("FooBar")
+
+      package foo.bar      
+      ```
+      <br>
+      <br>
+
 # Documentation comments
 <br>
 
