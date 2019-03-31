@@ -487,11 +487,148 @@
      ```kotlin
      println("$name has ${children.size} children")   
      ```
-
-<br>
-
+     <br>
+     <br>
+     
 # Idomatic use of language features
-<br>
+ * **불변성**
+   * Immutable 컬렉션을 선언할 때는 항상 ```Collection```, ```List```, ```Set```, ```Map```과 같은 인터페이스를 사용해라.
+   * 컬렉션 인스턴스를 생성할 때 가능한 Immutable 컬렉션 타입으로 생성해라.
+     ```kotlin
+     // Bad: use of mutable collection type for value which will not be mutated
+     fun validateValue(actualValue: String, allowedValues: HashSet<String>) { ... }
+
+     // Good: immutable collection type used instead
+     fun validateValue(actualValue: String, allowedValues: Set<String>) { ... }
+
+     // Bad: arrayListOf() returns ArrayList<T>, which is a mutable collection type
+     val allowedValues = arrayListOf("a", "b", "c")
+
+     // Good: listOf() returns List<T>
+     val allowedValues = listOf("a", "b", "c") 
+     ```
+   * 기본적으로 Kotlin에서 ```List```는 Read-only
+   <br>
+ * **기본 인자 값**
+   * 오버 로딩을 선언하기 위해 기본 인자 값을 가지는 함수를 선언하는 것이 좋다.
+     ```kotlin
+     // Bad
+     fun foo() = foo("a")
+     fun foo(a: String) { ... }
+
+     // Good
+     fun foo(a: String = "a") { ... }   
+     ```
+     <br>
+ * **타입 별칭**
+   * 코드베이스에서 여러 번 사용되는 함수 타입이나 타입 파라미터의 경우 ```type alias```를 사용하는 것이 좋다.
+   ```kotlin
+   typealias MouseClickHandler = (Any, MouseEvent) -> Unit
+   typealias PersonIndex = Map<String, Person>   
+   ```
+   <br>
+ * **람다 파라미터**
+   * 양이 짧고 중첩되지 않는 람다 구조에서는 명시적인 파라미터 선언보다 ```it```을 사용하는 것을 추천한다.
+   * 파라미터가 있는 중첩된 람다 구조에서는 파라미터를 명시적으로 선언해야 한다.
+   <br>
+ * **람다에서의 return**
+   * 람다 안에서 ```label```이 붙은 ```return```을 여러 개 사용하는 것을 피해라.
+   * 하나의 탈출 포인트를 갖도록 구조를 바꾸는 것을 고려해라.
+   * 만약 그것이 불가능하거나 충분히 명확하지 않다면, 람다를 익명 함수로 변환하는 것을 고려해라.
+   * 람다의 마지막 문장에서 ```label```이 붙은 ```return```을 사용하지 마라.
+   <br>
+ * **이름있는 인자**
+   * 동일한 ```primitive``` 타입의 파라미터가 여러 개이거나 또는 ```Boolean``` 타입일 때 이름있는 인자를 사용해라.
+   ```kotlin
+   drawSquare(x = 10, y = 10, width = 100, height = 100, fill = true)   
+   ```
+   <br>
+ * **조건문 사용**
+   * 아래와 같이 ```try```, ```if```, ```when```과 같은 표현식을 사용하는 것이 좋다.
+     ```kotlin
+     return if (x) foo() else bar()
+
+     return when(x) {
+         0 -> "zero"
+         else -> "nonzero"
+     }   
+     ```
+   * 아래 코드보다 위의 코드가 더 낫다.
+     ```kotlin
+     if (x)
+         return foo()
+     else
+         return bar()
+
+     when(x) {
+         0 -> return "zero"
+         else -> return "nonzero"
+     }   
+     ```
+     <br>
+  * **if VS when**
+    * 조건이 2개라면 ```when```보다 ```if```를 사용해라.
+      ```kotlin
+      when (x) {
+          null -> ...
+          else -> ...
+      }    
+      ```
+    * 위의 코드보다 ```if (x == null) ... else ...```를 사용해라.
+    * ```when```은 조건이 3개 이상일 때나 더 많은 선택지가 있을 때 사용해라. 
+    <br>
+  * **조건문에서 Nullable Boolean 값 사용**
+    * 만약 조건문에서 ```Nullable Boolean``` 값을 사용해야 한다면 ```if (value == true)``` 또는 ```if (value == false)```로 체크해라.
+    <br>
+  * **루프 사용**
+    * 루프에는 ```filter```, ```map```과 같은 고차 함수를 사용하는 것이 좋다.
+    * 예외적으로 ```forEach```의 경우 ```forEach```의 리시버가 ```nullable```이거나 ```forEach```가 긴 호출 체인의 일부로 사용되는 경우가 아니라면 일반적인 ```for``` 루프가 더 좋다.
+    * 복수의 고차 함수를 이용한 복잡한 표현과 루프를 선택할 때에는 각 상황에서 실행되는 operation들의 비용을 이해해야 하고 성능 고려 사항들을 유념해라.
+    <br>
+  * **범위 루프**
+    * 루프에서 범위를 지정할 때 ```until```을 사용해라.
+      ```kotlin
+      for (i in 0..n - 1) { ... }  // bad
+      for (i in 0 until n) { ... }  // good    
+      ```
+      <br>
+  * **함수 vs 프로퍼티**
+    * 몇몇 경우에 인자 없는 함수는 Read-only 프로퍼티로 교체될 수 있다.
+    * 의미론적으로는 비슷할지라도 언제 어느 것을 더 선호할 것인가에 대한 몇몇 양식적인 관습들이 있다.
+    * 아래 알고리즘의 경우 함수보다 프로퍼티가 좋다.
+      * ```throw```를 하지 않음
+      * 계산이 저렴하거나 한 번 실행 후 캐시 됨
+      * 객체의 상태가 변경되지 않은 경우 호출에 대해 동일한 결과를 반환
+      <br>
+  * **확장 함수 사용**
+    * 확장 함수를 자유롭게 사용해라.
+    * 주로 객체에 대해 동작하는 함수가 있을 때마다 해당 객체를 리시버로 받는 확장 함수를 만드는 것을 고려해라.
+    * API 공해를 최소화하기 위해 확장 함수의 가시성을 최대한 제한하라.
+    * 필요에 따라 ```private``` 가시성을 가지는 로컬 확장 함수, 멤버 확장 함수, Top-level 확장 함수를 사용해라.
+    <br>
+  * **infix 함수 사용**
+    * 유사한 역할을 수행하는 두 객체에서 동작할 때만 ```infix```로 선언해라.
+    * 좋은 예제 : ```and```, ```to```, ```zip```
+    * 나쁜 예제 : ```add```
+    * 리시버 객체를 변형시키는 경우 메소드를 ```infix```로 선언하지 마라.
+    <br>
+  * **팩토리 함수**
+    * 클래스의 팩토리 함수를 선언한다면 클래스와 동일한 이름을 피해라.
+    * 팩토리 함수의 동작이 왜 특별한지 명확하게 하기 위해 고유 이름을 사용해라.
+    * 정말 특별한 의미가 없는 경우에만 클래스와 동일한 이름을 사용할 수 있다.
+      ```kotlin
+      class Point(val x: Double, val y: Double) {
+          companion object {
+              fun fromPolar(angle: Double, radius: Double) = Point(...)
+          }
+      }    
+      ```
+    * 만약 여러 개의 오버 로딩된 생성자를 가진 객체가 서로 다른 슈퍼 클래스 생성자를 호출하지 않고 기본 인자 값을 가진 단일 생성자로 축소할 수 없는 경우 오버 로딩된 생성자를 팩토리 함수로 교체하는 것이 좋다.
+    <br>
+    <br>
 
 # Coding conventions for libraries
-
+  * 라이브러리를 작성할 때 API의 안전성을 보장하기 위해 아래의 추가적인 규칙들을 따르는 것이 좋다.
+    * 항상 멤버의 가시성을 명시적으로 지정해라(의도치 않게 ```public``` API로 선언되어 노출되지 않도록) 
+    * 항상 함수의 반환 타입과 속성 타입을 명시적으로 지정해라(구현 변경 시 의도치 않게 반환 타입이 변경되지 않도록)
+    * 새로운 주석이 필요 없는 ```override``` 된 것들을 제외하고 모든 ```public``` 멤버에 대한 주석을 제공해라. (라이브러리 문서 생성을 지원하기 위해)
