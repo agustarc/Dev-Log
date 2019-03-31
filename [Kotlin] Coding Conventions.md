@@ -389,12 +389,105 @@
       ```
     * 인자의 이름과 값을 구분하는 ```=``` 주변에 공백을 둔다. 
     <br>
-
+  * **체이닝 호출 형식**
+    * 체이닝 형태로 호출할 때는 ```.``` 또는 ```?.```는 들여 쓰기와 함께 개행처리한다. 
+      ```kotlin
+      val anchor = owner
+          ?.firstChild!!
+          .siblings(forward = true)
+          .dropWhile { it is PsiComment || it is PsiWhiteSpace }    
+      ```
+    * 체이닝의 첫 번째 호출은 보통 그 이전에 개행을 포함하지만, 코드가 그런 식으로 말이 된다면 생략해도 된다. 
+    <br>    
+  * **람다 형식**
+    * 람다 표현식에서 curly braces ```{}``` 주변에는 공백을 두어야 한다.
+    * 파라미터를 나타내는 화살표 ```->``` 주변에도 공백을 두어야 한다.
+    * 호출에 사용된 람다가 한 개인 경우 가능한 한 소괄호```()```를 제거해야 한다.
+      ```kotlin
+      list.filter { it > 10 }
+      ```
+    * 만약 람다에 ```label```을 할당한다면 ```label```과 opening curly brace ```{``` 사이에 공백을 두지 않는다.
+      ```kotlin
+      fun foo() {
+          ints.forEach lit@{
+              // ...
+          }
+      }    
+      ```
+    * 다중 라인 람다에서 파라미터의 이름을 선언할 때, 첫 번째 줄에 파라미터 이름과 화살표 ```->``` 를 선언하고 개행처리한다.
+      ```kotlin
+      appendCommaSeparated(properties) { prop ->
+          val propertyValue = prop.get(obj)  // ...
+      }    
+      ```
+    * 만약 파라미터 목록이 한 줄로 표현하기 적합하지 않다면 파라미터 목록과 화살표 ```->``` 를 들여 쓰기와 함께 개행처리한다.
+      ```kotlin
+      foo {
+         context: Context,
+         environment: Env
+         ->
+         context.configureEnv(environment)
+      }    
+      ```
+      <br>
+      <br>
 
 # Documentation comments
-<br>
+ * 주석의 내용이 길 경우 ```/**``` 을 시작으로 각 라인은 ```*```으로 시작한다.
+   ```kotlin
+   /**
+    * This is a documentation comment
+    * on multiple lines.
+    */ 
+   ```
+ * 짧은 주석의 경우 한 줄로 표현될 수 있다.
+   ```kotlin
+   /** This is a short documentation comment. */
+   ```
+ * 일반적으로 ```@param```과 ```@return``` 태그는 사용하지 마라.
+ * 대신, 파라미터 및 반환 값에 대한 설명을 주석 내용에 직접 포함시키고, 언급된 모든 매개변수에 링크를 추가한다.
+ * 주석 내용의 흐름에 맞지 않는 장황한 설명이 필요한 경우에만 ```@param``` 및 ```@return```을 사용해라.
+   ```kotlin
+   // Avoid doing this:
+
+   /**
+    * Returns the absolute value of the given number.
+    * @param number The number to return the absolute value for.
+    * @return The absolute value.
+    */
+   fun abs(number: Int) = ...
+
+   // Do this instead:
+
+   /**
+    * Returns the absolute value of the given [number].
+    */
+   fun abs(number: Int) = ... 
+   ```
+   <br>
+   <br>
 
 # Avoiding redundant constructs
+ * Kotlin에서 특정 문법 구조가 선택사항이고 IDE에 의해 불필요하다고 강조된 경우 생략할 수 있다.
+ * 명확성을 위해 불필요한 문법적 요소를 남겨두지 마라.
+ * **Unit**
+   * 함수가 ```Unit```을 반환한다면 반환 타입은 생략되어야 한다.
+   ```kotlin
+   fun foo() { // ": Unit" is omitted here
+
+   }   
+   ```
+   <br>
+ * **세미콜론**  
+   * 세미콜론은 가능한 생략해야 한다.
+   <br>
+ * **문자열 템플릿**
+   * 간단한 변수 하나를 문자열에 템플릿에서 참조할 땐 curly braces ```{}```를 사용하지 마라.
+   * curly braces ```{}```는 긴 표현식에서만 사용해라.
+     ```kotlin
+     println("$name has ${children.size} children")   
+     ```
+
 <br>
 
 # Idomatic use of language features
