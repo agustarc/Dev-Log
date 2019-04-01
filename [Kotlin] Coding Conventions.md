@@ -333,9 +333,9 @@
       <br>
       
   * **제어문 형식**
-    * ```if```나 ```when```과 같은 조건식이 멀티라인일 경우 항상 opening curly brace ```{```를 실행 구문에 가깝게 둔다.
-    * 각 조건식 라인은 4칸 공백으로 들여쓰기 한다.
-    * 조건식의 닫는 소괄호와 함께 여는 opening curly brace ```{```사이에 공백을 둔다.
+    * ```if```나 ```when```과 같은 조건문이 멀티라인일 경우 항상 opening curly brace ```{```를 실행 구문에 가깝게 둔다.
+    * 각 조건문 라인은 4칸 공백으로 들여쓰기 한다.
+    * 조건문의 닫는 소괄호와 함께 여는 opening curly brace ```{```사이에 공백을 둔다.
       ```kotlin
       if (!component.isSyncing &&
           !hasAnyKotlinRuntimeInScope(module)
