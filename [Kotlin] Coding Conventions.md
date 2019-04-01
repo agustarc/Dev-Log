@@ -21,7 +21,7 @@
     <br>
     
   * **클래스 레이아웃**
-    * 일반적으로 클래스 내부의 순서는 다음을 따른다. 
+    * 일반적으로 클래스의 내용은 다음의 순서로 정렬된다. 
       * Property declarations and initializer blocks
       * Secondary constructors
       * Method declarations
@@ -445,7 +445,7 @@
    /** This is a short documentation comment. */
    ```
  * 일반적으로 ```@param```과 ```@return``` 태그는 사용하지 마라.
- * 대신, 파라미터 및 반환 값에 대한 설명을 주석 내용에 직접 포함시키고, 언급된 모든 매개변수에 링크를 추가한다.
+ * 대신, 파라미터 및 반환 값에 대한 설명을 주석 내용에 직접 포함시키고, 언급된 모든 파라미터에 링크를 추가한다.
  * 주석 내용의 흐름에 맞지 않는 장황한 설명이 필요한 경우에만 ```@param``` 및 ```@return```을 사용해라.
    ```kotlin
    // Avoid doing this:
@@ -544,7 +544,7 @@
    ```
    <br>
  * **조건문 사용**
-   * 아래와 같이 ```try```, ```if```, ```when```과 같은 표현식을 사용하는 것이 좋다.
+   * ```try```, ```if```, ```when```은 아래와 같은 표현식을 사용하는 것이 좋다.
      ```kotlin
      return if (x) foo() else bar()
 
@@ -566,7 +566,7 @@
      }   
      ```
      <br>
-  * **if VS when**
+  * **if vs when**
     * 조건이 2개라면 ```when```보다 ```if```를 사용해라.
       ```kotlin
       when (x) {
